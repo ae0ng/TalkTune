@@ -1,6 +1,6 @@
 class User {
-  final int avgScore; // 평균 점수
-  final int totalReply; // 전체 답변 수
+  final String avgScore; // 평균 점수
+  final String totalReply; // 전체 답변 수
 
   User({
     required this.avgScore,
@@ -9,8 +9,8 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      avgScore: json['avgScore'] as int,
-      totalReply: json['totalReply'] as int,
+      avgScore: json['avgScore'] as String,
+      totalReply: json['totalReply'] as String,
     );
   }
 }

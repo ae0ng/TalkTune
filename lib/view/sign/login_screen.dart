@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:talk_tune/view/main/main_screen.dart';
+import 'package:talk_tune/services/apiService.dart';
 import 'package:talk_tune/view/sign/signup_screen.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -25,33 +23,8 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  bool autoLogin = false;
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  Future userLogin() async {
-    String email = emailController.text;
-    String password = passwordController.text;
-
-    var url = Uri.parse('http://172.19.88.231:5000/login');
-    var data = {"email": email, "password": password};
-
-    var response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(data),
-    );
-
-    if (response.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MainScreen()),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +109,11 @@ class _LogInState extends State<LogIn> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                   child: ElevatedButton(
-                    onPressed: userLogin,
+                    onPressed: () {
+                      final email = emailController.text;
+                      final password = passwordController.text;
+                      LoginApi.fetchLogin(context, email, password);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xff4F6F52),
                       fixedSize: const Size(300, 30),
